@@ -1,0 +1,44 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}
+Post Details | {{ post.title }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>{{ post.title }}</h3>
+    <h4>Topics</h4>
+    <ul>
+        {% for topic in post.topics.all %}
+        <li>{{ topic.name }}</li>
+        {% endfor %}
+    </ul>
+    <div>Posted on {{ post.published_on }}</div>
+    <br />
+    <div>{{ post.body }}</div>
+    <br />
+    <div>
+        <h4>Comments</h4>
+        {% for comment in post.comments.all %}
+        <div>---------------------------------------------------</div>
+        <div>{{ comment.body }}</div>
+        <div>Comment by {{ comment.user }} on {{ comment.commented_on }}</div>
+        <div>---------------------------------------------------</div>
+        {% endfor %}
+    </div>
+    {% if user.is_authenticated %}
+    <div>
+        <h4>Leave a Comment</h4>
+        <form method="post">
+            {% csrf_token %}
+            <div>{{ form.post }}</div>
+            <div>{{ form.user }}</div>
+            <div>{{ form.body }}</div>
+            <button>Submit</button>
+        </form>
+    </div>
+    {% endif %}
+    <br />
+    <div><a href="{% url 'blog:post_list' %}">
+            << Back to Post List</a> </div> {% endblock content %} </div>
